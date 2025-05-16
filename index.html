@@ -921,6 +921,20 @@
           return;
         }
 
+        // --- Stalemate check ---
+        if (isStalemate(opponent)) {
+          gameOverMessage.textContent = "Draw by stalemate!";
+          gameOverOverlay.style.display = "flex";
+          return;
+        }
+
+        // --- Insufficient material check ---
+        if (isInsufficientMaterial()) {
+          gameOverMessage.textContent = "Draw by insufficient material!";
+          gameOverOverlay.style.display = "flex";
+          return;
+        }
+
         turn = opponent;
         if (typeof makeAIMoveIfNeeded === "function") makeAIMoveIfNeeded();
       }
@@ -1010,6 +1024,66 @@
           }
         }
         return true;
+      }
+
+      // Add this function below isCheckmate
+      function isStalemate(color) {
+        if (isCheck(color)) return false;
+        for (let r = 0; r < 8; r++) {
+          for (let c = 0; c < 8; c++) {
+            if (
+              boardState[r][c].startsWith &&
+              boardState[r][c].startsWith(color)
+            ) {
+              const moves = getLegalMoves(r, c);
+              if (moves.length > 0) return false;
+            }
+          }
+        }
+        return true;
+      }
+
+      // Check for draw by insufficient material
+      function isInsufficientMaterial() {
+        // Gather all pieces on the board
+        const pieces = [];
+        for (let r = 0; r < 8; r++) {
+          for (let c = 0; c < 8; c++) {
+            const p = boardState[r][c];
+            if (p) pieces.push(p);
+          }
+        }
+        // Only kings left
+        if (pieces.length === 2) return true;
+        // King + bishop/knight vs king
+        if (pieces.length === 3) {
+          const types = pieces.map((p) => p[1]);
+          if (
+            types.filter((t) => t === "k").length === 2 &&
+            (types.includes("b") || types.includes("n"))
+          ) {
+            return true;
+          }
+        }
+        // King + bishop vs king + bishop (both bishops on same color)
+        if (pieces.length === 4) {
+          const bishops = pieces.filter((p) => p[1] === "b");
+          if (bishops.length === 2) {
+            // Check if both bishops are on same color square
+            const squares = [];
+            for (let r = 0; r < 8; r++) {
+              for (let c = 0; c < 8; c++) {
+                if (boardState[r][c] && boardState[r][c][1] === "b") {
+                  squares.push((r + c) % 2);
+                }
+              }
+            }
+            if (squares.length === 2 && squares[0] === squares[1]) {
+              return true;
+            }
+          }
+        }
+        return false;
       }
 
       function findKing(color) {
