@@ -495,15 +495,16 @@
         }
       }
 
-      function showCheckText() {
-        checkSound.currentTime = 0;
-        checkSound.play();
-        checkText.classList.add("show");
-        setTimeout(() => {
-          checkText.classList.remove("show");
-          checkText.style.display = "none";
-        }, 2000);
-      }
+   function showCheckText() {
+  checkSound.currentTime = 0;
+  checkSound.play();
+  checkText.style.display = "block";
+  checkText.classList.add("show");
+  setTimeout(() => {
+    checkText.classList.remove("show");
+    checkText.style.display = "none";
+  }, 2000);
+}
 
       function isKingCaptured(color) {
         for (let r = 0; r < 8; r++) {
