@@ -18,19 +18,38 @@ function getRandomAIMove(boardState, turn) {
   return moves[Math.floor(Math.random() * moves.length)];
 }
 
-// Example: Call this after player's move if computer mode is active
 function makeAIMoveIfNeeded() {
-  if (window.gameMode !== "computer" || turn !== "b") return;
-  setTimeout(() => {
-    const move = getRandomAIMove(boardState, "b");
-    if (move) {
-      makeMove(move.from[0], move.from[1], move.to[0], move.to[1]);
-      selected = null;
-      renderBoard();
-    }
-  }, 500); // Delay for realism
-}
+        if (window.gameMode !== "computer") return;
+        // Only move if it's black's turn (AI is black)
+        if (turn === "b") {
+          // Simple delay for realism
+          setTimeout(() => {
+            // Your AI logic here (example: random move)
+            const moves = [];
+            for (let r = 0; r < 8; r++) {
+              for (let c = 0; c < 8; c++) {
+                if (boardState[r][c] && boardState[r][c][0] === "b") {
+                  const legal = getLegalMoves(r, c);
+                  for (const [tr, tc] of legal) {
+                    moves.push({ fr: r, fc: c, tr, tc });
+                  }
+                }
+              }
+            }
+            if (moves.length > 0) {
+              const move = moves[Math.floor(Math.random() * moves.length)];
+              // Play move or capture sound for AI
+              if (boardState[move.tr][move.tc]) {
+                captureSound.currentTime = 0;
+                captureSound.play();
+              } else {
+                moveSound.currentTime = 0;
+                moveSound.play();
+              }
+              makeMove(move.fr, move.fc, move.tr, move.tc);
+            }
+          }, 1000);
+        }
+      }
 
-// To use: 
-// 1. Set window.gameMode = "computer" when Computer mode is selected.
-// 2. After every player move, call makeAIMoveIfNeeded().
+
