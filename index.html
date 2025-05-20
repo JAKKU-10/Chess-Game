@@ -14,9 +14,221 @@
       preload="auto"
     ></audio>
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      #settingsOverlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(30, 30, 30, 0.82);
+        z-index: 4000;
+        justify-content: center;
+        align-items: center;
+        animation: fadeInOverlay 0.4s;
+        /* backdrop-filter: blur(2px); */
+      }
+      .settings-box {
+        background: linear-gradient(120deg, #e0f7fa 70%, #b2ebf2 100%);
+        border-radius: 32px;
+        box-shadow: 0 12px 48px #0003, 0 1px 0 #fff8 inset;
+        padding: 48px 38px 32px 38px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 270px;
+        max-width: 95vw;
+        position: relative;
+        animation: settingsPopIn 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        border: 3px solid #00bcd4;
+        overflow: hidden;
+      }
+      .settings-box::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 32px;
+        background: radial-gradient(
+          circle at 70% 20%,
+          #00bcd444 0%,
+          transparent 70%
+        );
+        z-index: 0;
+        pointer-events: none;
+        animation: settingsGlow 2.5s infinite alternate;
+      }
+      #closeSettingsBtn {
+        position: absolute;
+        top: 22px;
+        right: 25px;
+        background: none;
+        border: none;
+        font-size: 28px;
+        cursor: pointer;
+        color: #b58863;
+        transition: color 0.2s, transform 0.15s;
+        z-index: 2;
+        /* border: 2px solid black;
+        border-radius: 5px; */
+      }
+      #closeSettingsBtn:hover {
+        color: #ffe066;
+        transform: scale(1.4);
+      }
+      .settings-box h2 {
+        margin: -10px 0 22px -20px;
+        color: #00838f;
+        font-size: 1.7rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-shadow: 0 2px 12px #00bcd455;
+        z-index: 1;
+        /* animation: fadeInText 1s; */
+      }
+      .settings-btn-list {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        width: 100%;
+        z-index: 1;
+      }
+      .settings-btn {
+        font-size: 1.13rem;
+        border-radius: 12px;
+        padding: 13px 0;
+        background: linear-gradient(90deg, #4dd0e1 60%, #00bcd4 100%);
+        border: none;
+        color: #006064;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 2px 12px #00bcd433, 0 1px 0 #fff8 inset;
+        transition: background 0.18s, color 0.18s, transform 0.12s,
+          box-shadow 0.18s;
+        width: 220px;
+        margin: 0 auto;
+        letter-spacing: 1px;
+        outline: none;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid black;
+        text-shadow: 0 2px 12px #00bcd455;
+        animation: fadeInText 1s;
+      }
+      .settings-btn:after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 0;
+        height: 0;
+        background: radial-gradient(circle, #4dd0e188 0%, transparent 80%);
+        transform: translate(-50%, -50%);
+        transition: width 0.3s, height 0.3s;
+        z-index: 0;
+        pointer-events: none;
+      }
+      .settings-btn:hover:after,
+      .settings-btn:focus:after {
+        width: 180%;
+        height: 180%;
+      }
+      .settings-btn:hover,
+      .settings-btn:focus {
+        background: linear-gradient(90deg, #00bcd4 80%, #e0f7fa 100%);
+        color: #004d40;
+        transform: translateY(-2px) scale(1.04);
+        box-shadow: 0 6px 24px #00bcd499, 0 2px 8px #00838f33;
+        z-index: 2;
+      }
+      .settings-btn,
+      .settings-btn:focus {
+        /* Existing styles... */
+        text-shadow: 0 2px 12px #ffe06655;
+        /* Optional: make the font a bit bolder for more effect */
+        font-weight: bold;
+        letter-spacing: 1px;
+        /* Optional: add a slight animation for pop-in */
+        animation: fadeInText 1s;
+      }
+      @media (max-width: 600px) {
+        .settings-box {
+          min-width: 90vw;
+          padding: 18px 4vw 12px 4vw;
+          border-radius: 18px;
+        }
+        .settings-box h2 {
+          font-size: 1.15rem;
+        }
+        .settings-btn {
+          font-size: 1em;
+          width: 90vw;
+          min-width: 0;
+          padding: 10px 0;
+        }
+      }
+      @keyframes fadeInOverlay {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes settingsPopIn {
+        0% {
+          transform: scale(0.7);
+        }
+        80% {
+          transform: scale(1.08);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      @keyframes settingsGlow {
+        0% {
+          opacity: 0.7;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      @keyframes fadeInText {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      body.mode-select-active #mainTitle {
+        display: none !important;
+      }
+      body.mode-select-active #mainTitle {
+        display: block !important;
+      }
+    </style>
   </head>
   <body>
-    <h1 style="text-align: center">Chess Game</h1>
+    <h1
+      id="mainTitle"
+      style="
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 18px;
+        color: #b5881a;
+        font-size: 2.4rem;
+        font-family: 'Segoe UI', 'Arial', sans-serif;
+        text-shadow: 0 4px 24px #ffe06699, 0 2px 8px #b5886333;
+        z-index: 10001;
+        position: relative;
+      "
+    >
+      Chess Game
+    </h1>
     <div style="text-align: center; margin-bottom: 10px">
       <button
         id="settingsBtn"
@@ -35,117 +247,20 @@
         ⚙️ Settings
       </button>
     </div>
-    <div
-      id="settingsOverlay"
-      style="
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 4000;
-        justify-content: center;
-        align-items: center;
-      "
-    >
-      <div
-        style="
-          background: #fffbe6;
-          border-radius: 18px;
-          padding: 36px 32px 28px 32px;
-          box-shadow: 0 8px 32px #0004;
-          min-width: 260px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          position: relative;
-        "
-      >
-        <button
-          id="closeSettingsBtn"
-          style="
-            position: absolute;
-            top: 10px;
-            right: 14px;
-            background: none;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            color: #a67c52;
-          "
-        >
-          ✖️
-        </button>
-        <h2 style="margin-bottom: 18px; color: #a67c52">Settings</h2>
-        <button
-          id="restartFromSettings"
-          style="
-            margin-bottom: 14px;
-            font-size: 18px;
-            border-radius: 8px;
-            padding: 8px 22px;
-            background: linear-gradient(120deg, #ffe066 70%, #e2c08d 100%);
-            border: 2px solid #b58863;
-            color: #a67c52;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 2px 8px #b5886322, 0 1px 0 #fff8 inset;
-          "
-        >
-          Restart Game
-        </button>
-        <button
-          id="resumeBtn"
-          style="
-            font-size: 18px;
-            border-radius: 8px;
-            padding: 8px 22px;
-            background: linear-gradient(120deg, #fffbe6 60%, #e2c08d 100%);
-            border: 2px solid #b58863;
-            color: #7a5c2e;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 2px 8px #b5886322, 0 1px 0 #fff8 inset;
-          "
-        >
-          Resume
-        </button>
-        <button
-          id="localBtn"
-          style="
-            margin-top: 18px;
-            font-size: 18px;
-            border-radius: 8px;
-            padding: 8px 22px;
-            background: linear-gradient(120deg, #e2c08d 60%, #fffbe6 100%);
-            border: 2px solid #b58863;
-            color: #7a5c2e;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 2px 8px #b5886322, 0 1px 0 #fff8 inset;
-          "
-        >
-          Local
-        </button>
-        <button
-          id="computerBtn"
-          style="
-            margin-top: 10px;
-            font-size: 18px;
-            border-radius: 8px;
-            padding: 8px 22px;
-            background: linear-gradient(120deg, #e2c08d 60%, #fffbe6 100%);
-            border: 2px solid #b58863;
-            color: #7a5c2e;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 2px 8px #b5886322, 0 1px 0 #fff8 inset;
-          "
-        >
-          Computer
-        </button>
+    <div id="settingsOverlay">
+      <div class="settings-box">
+        <button id="closeSettingsBtn">✖️</button>
+        <h2>⚙️ Game Settings</h2>
+        <div class="settings-btn-list">
+          <button class="settings-btn" id="restartFromSettings">
+            🔄 Restart Game
+          </button>
+          <button class="settings-btn" id="resumeBtn">▶️ Resume</button>
+          <button class="settings-btn" id="localBtn">👥 Local Mode</button>
+          <button class="settings-btn" id="computerBtn">
+            🤖 Computer Mode
+          </button>
+        </div>
       </div>
     </div>
     <div style="text-align: center; margin-bottom: 10px">
@@ -169,6 +284,225 @@
         <button class="game-over-btn" id="restartBtn2">Play Again</button>
       </div>
     </div>
+    <style>
+      /* Fullscreen, solid modal overlay */
+      #modeSelectOverlay {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at 60% 20%,
+          #fffbe6 60%,
+          #ffe4b3 100%
+        );
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeInOverlay 0.6s;
+      }
+      .mode-select-box {
+        background: linear-gradient(135deg, #fffbe6 80%, #ffe066 100%);
+        border-radius: 40px;
+        box-shadow: 0 20px 64px #ffe06655, 0 1px 0 #fff8 inset;
+        padding: 60px 48px 44px 48px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 320px;
+        max-width: 95vw;
+        position: relative;
+        animation: popInModeSelect 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        border: 5px solid #ffe066;
+        overflow: hidden;
+      }
+      .mode-select-box::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 40px;
+        background: radial-gradient(
+          circle at 70% 20%,
+          #ffe06688 0%,
+          transparent 70%
+        );
+        z-index: 0;
+        pointer-events: none;
+        animation: settingsGlow 2.5s infinite alternate;
+      }
+      .mode-select-title {
+        color: #b5881a;
+        font-size: 2.2rem;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-shadow: 0 4px 24px #ffe06699, 0 2px 8px #b5886333;
+        margin-bottom: 40px;
+        z-index: 1;
+        animation: fadeInText 1s;
+        font-family: "Segoe UI", "Arial", sans-serif;
+      }
+      .mode-select-btn {
+        font-size: 1.3rem;
+        border-radius: 22px;
+        padding: 22px 0;
+        background: linear-gradient(90deg, #4dd0e1 60%, #00bcd4 100%);
+        border: none;
+        color: #006064;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 6px 32px #00bcd433, 0 1px 0 #fff8 inset;
+        width: 290px;
+        margin-bottom: 32px;
+        letter-spacing: 1.5px;
+        outline: none;
+        position: relative;
+        overflow: hidden;
+        text-shadow: 0 2px 12px #00bcd455;
+        animation: fadeInText 1.1s;
+        transition: background 0.22s cubic-bezier(0.4, 2, 0.6, 1), color 0.18s,
+          transform 0.14s cubic-bezier(0.4, 2, 0.6, 1), box-shadow 0.18s;
+        z-index: 1;
+        font-family: "Segoe UI", "Arial", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+      }
+
+      .mode-select-btn:last-child {
+        background: linear-gradient(90deg, #ffe066 60%, #e2c08d 100%);
+        color: #a67c52;
+        margin-bottom: 0;
+        text-shadow: 0 2px 12px #ffe06699;
+      }
+
+      .mode-select-btn:hover,
+      .mode-select-btn:focus {
+        background: linear-gradient(90deg, #e2c08d 80%, #fffbe6 100%);
+        color: #7a5c2e;
+        transform: translateY(-4px) scale(1.08);
+        box-shadow: 0 16px 48px #ffe066cc, 0 2px 8px #b5886333;
+        z-index: 2;
+      }
+
+      .mode-select-btn:active {
+        transform: scale(0.97);
+      }
+
+      .mode-select-btn span {
+        font-size: 2em;
+        margin-right: 10px;
+        vertical-align: middle;
+        filter: drop-shadow(0 2px 8px #ffe06666);
+      }
+
+      @media (max-width: 600px) {
+        .mode-select-box {
+          min-width: 92vw;
+          padding: 24px 4vw 18px 4vw;
+          border-radius: 20px;
+        }
+        .mode-select-title {
+          font-size: 1.3rem;
+          margin-bottom: 18px;
+        }
+        .mode-select-btn {
+          font-size: 1.05em;
+          width: 92vw;
+          min-width: 0;
+          padding: 14px 0;
+          margin-bottom: 18px;
+          gap: 10px;
+        }
+        .mode-select-btn span {
+          font-size: 1.4em;
+          margin-right: 6px;
+        }
+      }
+      @keyframes fadeInOverlay {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes popInModeSelect {
+        0% {
+          transform: scale(0.7);
+        }
+        80% {
+          transform: scale(1.08);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      @keyframes settingsGlow {
+        0% {
+          opacity: 0.7;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      @keyframes fadeInText {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      /* Hide main UI until mode is chosen */
+      body.mode-select-active #settingsBtn,
+      body.mode-select-active #settingsOverlay,
+      body.mode-select-active #undoBtn,
+      body.mode-select-active #redoBtn,
+      body.mode-select-active #game,
+      body.mode-select-active #checkText,
+      body.mode-select-active #promotionOverlay,
+      body.mode-select-active #gameOverOverlay {
+        display: none !important;
+      }
+    </style>
+
+    <div id="modeSelectOverlay">
+      <div class="mode-select-box">
+        <div class="mode-select-title">Choose Game Mode</div>
+        <button id="chooseLocal" class="mode-select-btn">
+          <span>👥</span> Local Mode
+        </button>
+        <button id="chooseComputer" class="mode-select-btn">
+          <span>🤖</span> Computer Mode
+        </button>
+      </div>
+    </div>
+    <script>
+      // Show mode select overlay on first load
+      window.addEventListener("DOMContentLoaded", () => {
+        const overlay = document.getElementById("modeSelectOverlay");
+        overlay.style.display = "flex";
+        document.body.classList.add("mode-select-active");
+        document.body.style.overflow = "hidden"; // Prevent scroll while modal is open
+
+        document.getElementById("chooseLocal").onclick = () => {
+          window.gameMode = "local";
+          overlay.style.display = "none";
+          document.body.classList.remove("mode-select-active");
+          document.body.style.overflow = "";
+          if (typeof initializeBoard === "function") initializeBoard();
+        };
+        document.getElementById("chooseComputer").onclick = () => {
+          window.gameMode = "computer";
+          overlay.style.display = "none";
+          document.body.classList.remove("mode-select-active");
+          document.body.style.overflow = "";
+          if (typeof initializeBoard === "function") initializeBoard();
+        };
+      });
+    </script>
     <script src="ai.js"></script>
     <script src="script.js"></script>
   </body>
